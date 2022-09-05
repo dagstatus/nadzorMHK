@@ -10,6 +10,22 @@ class MainWindow:
     def create_main_window(self):
         root = tk.Tk()
         root.title('Надзор')
+        menubar = tk.Menu(root)
+
+        filemenu = tk.Menu(menubar, tearoff=False)
+        filemenu.add_command(label="Журнал разрешений на строительство")
+        filemenu.add_command(label="Журнал разрешений на ввод")
+        filemenu.add_command(label="Выход", command=root.destroy)
+        menubar.add_cascade(label="Главное меню", menu=filemenu)
+
+        adding_menu = tk.Menu(menubar, tearoff=False)
+        adding_menu.add_command(label='Добавить разрешение на строительство')
+        adding_menu.add_command(label='Добавить разрешение на ввод')
+        menubar.add_cascade(label='Выдача разрешений', menu=adding_menu)
+
+
+
+
 
         sample = {"File Name": [f"file_{i}" for i in range(5)],
                   'Sheet Name': [f"sheet_{i}" for i in range(5)],
@@ -40,6 +56,10 @@ class MainWindow:
         for index, row in df.iterrows():
             tree.insert("", 0, text=index, values=list(row))
 
+
+
+
+        root.config(menu=menubar)
         root.mainloop()
 
 
