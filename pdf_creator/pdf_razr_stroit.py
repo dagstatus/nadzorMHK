@@ -1,8 +1,8 @@
 from fpdf import FPDF
 
 # НАДО ПЕРЕНЕСТИ В КОНФИГ
-owner_adrr = '          367000, РД, г.Махачкала, ул. Дахадаева, 11'
-tel_number_owner = '8(999)123-45-67          '
+owner_adrr = '          367000, РД, г.Махачкала, ул. Коркмасова, 18'
+tel_number_owner = '(8722) 78-02-72          '
 
 
 class PDF(FPDF):
@@ -18,19 +18,21 @@ pdf.image('gerb.jpg', link='', type='', w=45, h=35)
 # Document title centered, 'B'old, 14 pt
 pdf.add_font('PTSerif', '', 'fonts/PTSerif-Regular.ttf', uni=True)
 pdf.add_font('PTSerifBold', '', 'fonts/PTSerif-Bold.ttf', uni=True)
-pdf.set_font('PTSerif', '', 22)
+pdf.set_font('PTSerif', '', 18)
 
 start_head_text = 30
 
 pdf.set_xy(0.0, start_head_text)
 pdf.set_text_color(0, 0, 0)
-pdf.cell(w=210.0, h=40.0, align='C', txt="АДМИНИСТРАЦИЯ ГОРОДА МАХАЧКАЛЫ", border=0)
+pdf.cell(w=210.0, h=40.0, align='C', txt="АДМИНИСТРАЦИЯ ГОРОДСКОГО ОКРУГА", border=0)
+pdf.set_xy(0.0, start_head_text + 7)
+pdf.cell(w=210.0, h=40.0, align='C', txt='С ВНУТРИГОРОДСКИМ ДЕЛЕНИЕМ "ГОРОД МАХАЧКАЛА"', border=0)
 
-pdf.set_xy(0.0, start_head_text + 10)
+pdf.set_xy(0.0, start_head_text + 17)
 pdf.set_font('PTSerif', '', 18)
-pdf.cell(w=210.0, h=40.0, align='C', txt='УПРАВЛЕНИЕ ПО ВОПРОСАМ КООРДИНАЦИИ', border=0)
-pdf.set_xy(0.0, start_head_text + 18)
-pdf.cell(w=210.0, h=40.0, align='C', txt='КАПИТАЛЬНОГО СТРОИТЕЛЬСТВА')
+pdf.cell(w=210.0, h=40.0, align='C', txt='УПРАВЛЕНИЕ АРХИТЕКТУРЫ И ГРАДОСТРОИТЕЛЬСТВА', border=0)
+# pdf.set_xy(0.0, start_head_text + 25)
+# pdf.cell(w=210.0, h=40.0, align='C', txt='КАПИТАЛЬНОГО СТРОИТЕЛЬСТВА')
 
 pdf.set_xy(0.0, start_head_text + 28)
 pdf.set_font('PTSerif', '', 10)
