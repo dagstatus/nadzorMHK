@@ -134,13 +134,16 @@ labels = [
         ]
 
 for x in labels:
-    res.append('var_' + x.split()[0][:-1])
+    res.append([x, f'INPUT_DATA.get("{x.split()[0][:-1]}")'])
 
-for y in res:
-    y = 4
-    print(y)
-print(res)
+
+# INPUT_DATA.get('3.3.7')
 print(res)
 
+for x in res:
+    print(x)
 
-print(res[0])
+statttt = ('2.1', '3.3', '4.3', '4.5', '4.6', '4.6.1', '5.1', '5.2', '5.5', '6.2', '6.3', '6.4')
+
+if '3.3'.startswith(statttt):
+    print('asaa')

@@ -1,16 +1,22 @@
 import tkinter as tk
 from tkinter import ttk
 import pandas as pd
-
+from nadzor_base.create_razr_str import AddRazrStr
 
 class MainWindow:
     def __init__(self):
         self.result = None
 
     def create_main_window(self):
+
+
+
         root = tk.Tk()
         root.title('Надзор')
         menubar = tk.Menu(root)
+
+        def make_razr():
+            model_window_create_razr = AddRazrStr(tk_main=root)
 
         filemenu = tk.Menu(menubar, tearoff=False)
         filemenu.add_command(label="Журнал разрешений на строительство")
@@ -19,7 +25,7 @@ class MainWindow:
         menubar.add_cascade(label="Главное меню", menu=filemenu)
 
         adding_menu = tk.Menu(menubar, tearoff=False)
-        adding_menu.add_command(label='Добавить разрешение на строительство')
+        adding_menu.add_command(label='Добавить разрешение на строительство', command=make_razr)
         adding_menu.add_command(label='Добавить разрешение на ввод')
         menubar.add_cascade(label='Выдача разрешений', menu=adding_menu)
 

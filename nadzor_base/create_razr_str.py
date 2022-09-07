@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter.ttk as ttk
 import tkinter as tk
 from functools import partial
+from pdf_creator.pdf_razr_stroit import CreatePdfClass
 
 class YScrolledFrame(tk.Frame):
     def __init__(self, parent, *args, **kwargs):
@@ -39,9 +40,10 @@ class Notebook(ttk.Notebook):
         return self._tab[key].content
 
 class AddRazrStr:
-    def __init__(self):
+    def __init__(self, tk_main):
         self.result = None
-        self.create_window = Tk()
+        # self.create_window = Tk()
+        self.create_window = Toplevel(tk_main)
         self.create_window.title('Добавить разрешение на строительство')
         self.create_window.geometry('600x450')
         self.razdels_tabs = ['Раздел 1', 'Раздел 2', 'Раздел 3', 'Раздел 4', 'Раздел 5', 'Раздел 6',
@@ -53,7 +55,7 @@ class AddRazrStr:
             '1.3. Наименование органа (организации)',
             '1.4. Срок действия настоящего разрешения',
             '1.5. Дата внесения изменений или исправлений',
-            '2.1. Сведения о физическом лице или индивидуальном предпринимателе',
+            # '2.1. Сведения о физическом лице или индивидуальном предпринимателе',
             '2.1.1. Фамилия:',
             '2.1.2. Имя:',
             '2.1.3. Отчество',
@@ -66,7 +68,7 @@ class AddRazrStr:
             '3.1. Наименование объекта капитального строительства (этапа) в соответствии с проектной документацией:',
             '3.2. Вид выполняемых работ в отношении объекта капитального строительства в соответствии с проектной '
             'документацией',
-            '3.3. Адрес (местоположение) объекта капитального строительства',
+            # '3.3. Адрес (местоположение) объекта капитального строительства',
             '3.3.1. Субъект Российской Федерации:',
             '3.3.2. Муниципальный район, муниципальный округ, городской округ или внутригородская территория (для '
             'городов федерального значения) в составе субъекта Российской Федерации, федеральная территория:',
@@ -81,43 +83,43 @@ class AddRazrStr:
             'или планируется расположение объекта капитального строительства',
             '4.2. Площадь земельного участка (земельных участков), в границах которого (которых) расположен или '
             'планируется расположение объекта капитального строительства',
-            '4.3. Сведения о градостроительном плане земельного участка',
+            # '4.3. Сведения о градостроительном плане земельного участка',
             '4.3.Х.1. Дата:',
             '4.3.Х.2. Номер:',
             '4.3.Х.3. Наименование органа, выдавшего градостроительный план земельного участка:',
             '4.4. Условный номер земельного участка (земельных участков) на утвержденной схеме расположения '
             'земельного участка или земельных участков на кадастровом плане территории (при необходимости)',
-            '4.5. Сведения о схеме расположения земельного участка или земельных участков на кадастровом плане '
-            'территории',
+            # '4.5. Сведения о схеме расположения земельного участка или земельных участков на кадастровом плане '
+            # 'территории',
             '4.5.1. Дата решения:',
             '4.5.2. Номер решения:',
             '4.5.3. Наименовании организации, уполномоченного органа или лица, принявшего решение об утверждении '
             'схемы расположения земельного участка или земельных участков:',
-            '4.6. Информация о документации по планировке территории',
-            '4.6.1. Сведения о проекте планировки территории',
+            # '4.6. Информация о документации по планировке территории',
+            # '4.6.1. Сведения о проекте планировки территории',
             '4.6.1.X.1. Дата решения:',
             '4.6.1.Х.2. Номер решения:',
             '4.6.1.Х.3. Наименование организации, уполномоченного органа или лица, принявшего решение об утверждении '
             'проекта планировки территории:',
-            '4.6.2. Сведения о проекте межевания территории',
+            # '4.6.2. Сведения о проекте межевания территории',
             '4.6.2.Х.1. Дата решения:',
             '4.6.2.Х.2. Номер решения:',
             '4.6.2.Х.3. Наименовании организации, уполномоченного органа или лица, принявшего решение об утверждении '
             'проекта межевания территории:',
-            '5.1. Сведения о разработчике - индивидуальном предпринимателе',
+            # '5.1. Сведения о разработчике - индивидуальном предпринимателе',
             '5.1.1. Фамилия:',
             '5.1.2. Имя:',
             '5.1.3. Отчество',
             '5.1.4. ИНН:',
             '5.1.5. ОГРНИП:',
-            '5.2. Сведения о разработчике - юридическом лице',
+            # '5.2. Сведения о разработчике - юридическом лице',
             '5.2.1. Полное наименование',
             '5.2.2. ИНН:',
             '5.2.3. ОГРН:',
             '5.3. Дата утверждения (при наличии)',
             '5.4. Номер (при наличии)',
-            '5.5. Типовое архитектурное решение объекта капитального строительства, утвержденное для исторического '
-            'поселения (при наличии)',
+            # '5.5. Типовое архитектурное решение объекта капитального строительства, утвержденное для исторического '
+            # 'поселения (при наличии)',
             '5.5.1. Дата:',
             '5.5.2. Номер:',
             '5.5.3. Наименование документа:',
@@ -128,18 +130,18 @@ class AddRazrStr:
             '6.1.Х.2. Номер:',
             '6.1.Х.3. Наименование органа или организации, 3выдавшей положительное заключение экспертизы проектной '
             'документации:',
-            '6.2. Сведения о государственной экологической экспертизе',
+            # '6.2. Сведения о государственной экологической экспертизе',
             '6.2.Х.1. Дата утверждения:',
             '6.2.Х.2. Номер:',
             '6.2.Х.3. Наименование органа, утвердившего положительное заключение государственной экологической '
             'экспертизы:',
-            '6.3. Подтверждение соответствия вносимых в проектную документацию изменений требованиям, указанным '
-            'в части 3.8 статьи 49 Градостроительного кодекса Российской Федерации',
+            # '6.3. Подтверждение соответствия вносимых в проектную документацию изменений требованиям, указанным '
+            # 'в части 3.8 статьи 49 Градостроительного кодекса Российской Федерации',
             '6.3.1. Дата:',
             '6.3.2. Номер:',
             '6.3.3. Сведения о лице, утвердившем указанное подтверждение',
-            '6.4. Подтверждение соответствия вносимых в проектную документацию изменений требованиям, указанным '
-            'в части 3.9 статьи 49 Градостроительного кодекса Российской Федерации',
+            # '6.4. Подтверждение соответствия вносимых в проектную документацию изменений требованиям, указанным '
+            # 'в части 3.9 статьи 49 Градостроительного кодекса Российской Федерации',
             '6.4.1. Дата:',
             '6.4.2. Номер:',
             '6.4.3. Наименование органа исполнительной власти или организации, проводившей оценку соответствия:',
@@ -179,6 +181,8 @@ class AddRazrStr:
         # self.create_notebooks()
         self.new_not()
 
+
+
     def new_not(self):
         tab_parent = Notebook(self.create_window, self.razdels_tabs)
         tab_parent.grid(row=0, column=0, sticky='nsew')
@@ -189,6 +193,11 @@ class AddRazrStr:
             vars_string.append(x.split()[0][:-1])
             vars_string_keys.append(x.split()[0][:-1])
 
+        def make_pdf_class():
+            pdfclass = CreatePdfClass()
+            pdfclass.input_data = self.dict_enter_values
+            pdfclass.make_razr_pdf()
+
         def make_input_dict():
             for index_, _x in enumerate(vars_string):
                 try:
@@ -197,7 +206,7 @@ class AddRazrStr:
                         self.dict_enter_values[vars_string_keys[index_]] = val
                 except:
                     pass
-
+            make_pdf_class()
             print(self.dict_enter_values)
 
         # tab_parent = ttk.Notebook(self.create_window)
@@ -227,129 +236,54 @@ class AddRazrStr:
 
             loginButton = Button(tab, text="Вход", command=make_input_dict, width=30).grid(row=row_tab, column=0)
         tab_parent.pack(expand=1, anchor="nw")
-        self.create_window.mainloop()
+        # self.create_window.mainloop()
 
 
 
-    def create_notebooks(self):
-        vars_string = []
-        vars_string_keys = []
-        for x in self.labels:
-            vars_string.append(x.split()[0][:-1])
-            vars_string_keys.append(x.split()[0][:-1])
-
-        def make_input_dict():
-            for index_, _x in enumerate(vars_string):
-                try:
-                    val = _x.get()
-                    if val:
-                        self.dict_enter_values[vars_string_keys[index_]] = val
-                except:
-                    pass
-
-            print(self.dict_enter_values)
-
-        tab_parent = ttk.Notebook(self.create_window)
-        tab1 = tab2 = tab3 = tab4 = tab5 = tab6 = tab7 = tab8 = ttk.Frame(tab_parent)
-        list_tabs = [tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8]
-        for idx, tab in enumerate(list_tabs):
-            tab = ttk.Frame(tab_parent)
-            tab_parent.add(tab, text=self.razdels_tabs[idx])
-
-            # canvas1.config(yscrollcommand=scroll.set, scrollregion=(0, 0, 100, 1000))
-
-            row_tab = 0
-            for id_labels, label_idx in enumerate(self.labels):
-                if str(label_idx).startswith(str(idx+1)):
-                    tk.Label(tab, text=label_idx, justify=LEFT, wraplength=400).grid(row=row_tab, column=0, padx=0, pady=5, sticky=W)
-
-                    temp_key = str(label_idx.split()[0][:-1])
-
-                    vars_string[id_labels] = StringVar()
-
-                    tk.Entry(tab, justify=LEFT, textvariable=vars_string[id_labels]).grid(row=row_tab, column=1, padx=0, pady=5, sticky=W)
-
-                    row_tab += 1
-
-            loginButton = Button(tab, text="Вход", command=make_input_dict, width=30).grid(row=row_tab, column=0)
-        tab_parent.pack(expand=1, anchor="nw")
-        self.create_window.mainloop()
+    # def create_notebooks_old(self):
+    #     vars_string = []
+    #     vars_string_keys = []
+    #     for x in self.labels:
+    #         vars_string.append(x.split()[0][:-1])
+    #         vars_string_keys.append(x.split()[0][:-1])
+    #
+    #     def make_input_dict():
+    #         for index_, _x in enumerate(vars_string):
+    #             try:
+    #                 val = _x.get()
+    #                 if val:
+    #                     self.dict_enter_values[vars_string_keys[index_]] = val
+    #             except:
+    #                 pass
+    #
+    #         print(self.dict_enter_values)
+    #
+    #     tab_parent = ttk.Notebook(self.create_window)
+    #     tab1 = tab2 = tab3 = tab4 = tab5 = tab6 = tab7 = tab8 = ttk.Frame(tab_parent)
+    #     list_tabs = [tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8]
+    #     for idx, tab in enumerate(list_tabs):
+    #         tab = ttk.Frame(tab_parent)
+    #         tab_parent.add(tab, text=self.razdels_tabs[idx])
+    #
+    #         # canvas1.config(yscrollcommand=scroll.set, scrollregion=(0, 0, 100, 1000))
+    #
+    #         row_tab = 0
+    #         for id_labels, label_idx in enumerate(self.labels):
+    #             if str(label_idx).startswith(str(idx+1)):
+    #                 tk.Label(tab, text=label_idx, justify=LEFT, wraplength=400).grid(row=row_tab, column=0, padx=0, pady=5, sticky=W)
+    #
+    #                 temp_key = str(label_idx.split()[0][:-1])
+    #
+    #                 vars_string[id_labels] = StringVar()
+    #
+    #                 tk.Entry(tab, justify=LEFT, textvariable=vars_string[id_labels]).grid(row=row_tab, column=1, padx=0, pady=5, sticky=W)
+    #
+    #                 row_tab += 1
+    #
+    #         loginButton = Button(tab, text="Вход", command=make_input_dict, width=30).grid(row=row_tab, column=0)
+    #     tab_parent.pack(expand=1, anchor="nw")
+    #     self.create_window.mainloop()
 
 
 if __name__ == '__main__':
     test_cls = AddRazrStr()
-
-
-
-# form = tk.Tk()
-# form.title("Tkinter Database Form")
-# form.geometry("600x450")
-#
-# tab_parent = ttk.Notebook(form)
-#
-# tab1 = ttk.Frame(tab_parent)
-# tab2 = ttk.Frame(tab_parent)
-#
-# tab_parent.add(tab1, text="All Records")
-# tab_parent.add(tab2, text="Add New Record")
-#
-# # === WIDGETS FOR TAB ONE
-# firstLabelTabOne = tk.Label(tab1, text="First Name:")
-# familyLabelTabOne = tk.Label(tab1, text="Family Name:")
-# jobLabelTabOne = tk.Label(tab1, text="Address:")
-#
-# firstEntryTabOne = tk.Entry(tab1)
-# familyEntryTabOne = tk.Entry(tab1)
-# jobEntryTabOne = tk.Entry(tab1)
-#
-# imgLabelTabOne = tk.Label(tab1)
-#
-# buttonForward = tk.Button(tab1, text="Forward")
-# buttonBack = tk.Button(tab1, text="Back")
-#
-# # === ADD WIDGETS TO GRID ON TAB ONE
-# firstLabelTabOne.grid(row=0, column=0, padx=15, pady=15)
-# firstEntryTabOne.grid(row=0, column=1, padx=15, pady=15)
-#
-# familyLabelTabOne.grid(row=1, column=0, padx=15, pady=15)
-# familyEntryTabOne.grid(row=1, column=1, padx=15, pady=15)
-#
-# jobLabelTabOne.grid(row=2, column=0, padx=15, pady=15)
-# jobEntryTabOne.grid(row=2, column=1, padx=15, pady=15)
-#
-# imgLabelTabOne.grid(row=0, column=2, rowspan=3, padx=15, pady=15)
-#
-# buttonBack.grid(row=3, column=0, padx=15, pady=15)
-# buttonForward.grid(row=3, column=2, padx=15, pady=15)
-#
-# # === WIDGETS FOR TAB TWO
-# firstLabelTabTwo = tk.Label(tab2, text="secont Name:")
-# familyLabelTabTwo = tk.Label(tab2, text="Family Name:")
-# jobLabelTabTwo = tk.Label(tab2, text="Address:")
-#
-# firstEntryTabTwo = tk.Entry(tab2)
-# familyEntryTabTwo = tk.Entry(tab2)
-# jobEntryTabTwo = tk.Entry(tab2)
-#
-# imgLabelTabTwo = tk.Label(tab2)
-#
-# buttonCommit = tk.Button(tab2, text="Avfdvfdvfdabase")
-# buttonAddImage = tk.Button(tab2, text="Add Image")
-#
-# # === ADD WIDGETS TO GRID ON TAB TWO
-# firstLabelTabTwo.grid(row=0, column=0, padx=15, pady=15)
-# firstEntryTabTwo.grid(row=0, column=1, padx=15, pady=15)
-# imgLabelTabTwo.grid(row=0, column=2, rowspan=3, padx=15, pady=15)
-#
-# familyLabelTabTwo.grid(row=1, column=0, padx=15, pady=15)
-# familyEntryTabTwo.grid(row=1, column=1, padx=15, pady=15)
-#
-# jobLabelTabTwo.grid(row=2, column=0, padx=15, pady=15)
-# jobEntryTabTwo.grid(row=2, column=1, padx=15, pady=15)
-#
-# buttonCommit.grid(row=4, column=1, padx=15, pady=15)
-# buttonAddImage.grid(row=4, column=2, padx=15, pady=15)
-#
-# tab_parent.pack(expand=1, fill='both')
-#
-# form.mainloop()
