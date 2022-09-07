@@ -1,12 +1,53 @@
-tettt = '1.1. Дата разрешения на строительство'
+from tkinter import *
+import tkinter.ttk as ttk
+import tkinter as tk
+from functools import partial
 
-t1 = tettt.split()[0][:-1]
-t1 = str(t1).replace('.', '_')
+class YScrolledFrame(tk.Frame):
+    def __init__(self, parent, *args, **kwargs):
+        super().__init__(parent, *args, **kwargs)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_columnconfigure(0, weight=1)
 
-print(t1)
+        self.canvas = canvas = tk.Canvas(self, relief='raised', width=1000, height=640)
+        canvas.grid(row=0, column=0, sticky='nsew')
 
-res = []
-labels = [
+        scroll = tk.Scrollbar(self, command=canvas.yview, orient=tk.VERTICAL)
+        canvas.config(yscrollcommand=scroll.set)
+        scroll.grid(row=0, column=1, sticky='nsew')
+
+        self.content = tk.Frame(canvas)
+        self.canvas.create_window(0, 0, window=self.content, anchor="nw")
+
+        self.bind('<Configure>', self.on_configure)
+
+    def on_configure(self, event):
+        bbox = self.content.bbox('ALL')
+        self.canvas.config(scrollregion=bbox)
+
+class Notebook(ttk.Notebook):
+    def __init__(self, parent, tab_labels):
+        super().__init__(parent)
+
+        self._tab = {}
+        for text in tab_labels:
+            self._tab[text] = YScrolledFrame(self)
+            # layout by .add defaults to fill=tk.BOTH, expand=True
+            self.add(self._tab[text], text=text, compound=tk.TOP)
+
+    def tab(self, key):
+        return self._tab[key].content
+
+class AddRazrStr:
+    def __init__(self):
+        self.result = None
+        self.create_window = Tk()
+        self.create_window.title('Добавить разрешение на строительство')
+        self.create_window.geometry('600x450')
+        self.razdels_tabs = ['Раздел 1', 'Раздел 2', 'Раздел 3', 'Раздел 4', 'Раздел 5', 'Раздел 6',
+                             'Раздел 7', 'Раздел 8']
+
+        self.labels = [
             '1.1. Дата разрешения на строительство',
             '1.2. Номер разрешения на строительство',
             '1.3. Наименование органа (организации)',
@@ -133,14 +174,182 @@ labels = [
             '8.Х.6. Иные показатели',
         ]
 
-for x in labels:
-    res.append('var_' + x.split()[0][:-1])
+        self.dict_enter_values = {}
 
-for y in res:
-    y = 4
-    print(y)
-print(res)
-print(res)
+        # self.create_notebooks()
+        self.new_not()
+
+    def new_not(self):
+        tab_parent = Notebook(self.create_window, self.razdels_tabs)
+        tab_parent.grid(row=0, column=0, sticky='nsew')
+
+        vars_string = []
+        vars_string_keys = []
+        for x in self.labels:
+            vars_string.append(x.split()[0][:-1])
+            vars_string_keys.append(x.split()[0][:-1])
+
+        def make_input_dict():
+            for index_, _x in enumerate(vars_string):
+                try:
+                    val = _x.get()
+                    if val:
+                        self.dict_enter_values[vars_string_keys[index_]] = val
+                except:
+                    pass
+
+            print(self.dict_enter_values)
+
+        # tab_parent = ttk.Notebook(self.create_window)
+        tab1 = tab2 = tab3 = tab4 = tab5 = tab6 = tab7 = tab8 = ttk.Frame(tab_parent)
+        list_tabs = [tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8]
+        for idx, tab in enumerate(list_tabs):
+            tab = tab_parent.tab(self.razdels_tabs[idx])
+            # tab = ttk.Frame(tab_parent)
+            # tab_parent.add(tab, text=self.razdels_tabs[idx])
+
+            # canvas1.config(yscrollcommand=scroll.set, scrollregion=(0, 0, 100, 1000))
+
+            row_tab = 0
+            for id_labels, label_idx in enumerate(self.labels):
+                if str(label_idx).startswith(str(idx + 1)):
+                    tk.Label(tab, text=label_idx, justify=LEFT, wraplength=400).grid(row=row_tab, column=0, padx=0,
+                                                                                     pady=5, sticky=W)
+
+                    temp_key = str(label_idx.split()[0][:-1])
+
+                    vars_string[id_labels] = StringVar()
+
+                    tk.Entry(tab, justify=LEFT, textvariable=vars_string[id_labels], width=200).grid(row=row_tab, column=1, padx=0,
+                                                                                          pady=5, sticky=W)
+
+                    row_tab += 1
+
+            loginButton = Button(tab, text="Вход", command=make_input_dict, width=30).grid(row=row_tab, column=0)
+        tab_parent.pack(expand=1, anchor="nw")
+        self.create_window.mainloop()
 
 
-print(res[0])
+
+    def create_notebooks(self):
+        vars_string = []
+        vars_string_keys = []
+        for x in self.labels:
+            vars_string.append(x.split()[0][:-1])
+            vars_string_keys.append(x.split()[0][:-1])
+
+        def make_input_dict():
+            for index_, _x in enumerate(vars_string):
+                try:
+                    val = _x.get()
+                    if val:
+                        self.dict_enter_values[vars_string_keys[index_]] = val
+                except:
+                    pass
+
+            print(self.dict_enter_values)
+
+        tab_parent = ttk.Notebook(self.create_window)
+        tab1 = tab2 = tab3 = tab4 = tab5 = tab6 = tab7 = tab8 = ttk.Frame(tab_parent)
+        list_tabs = [tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8]
+        for idx, tab in enumerate(list_tabs):
+            tab = ttk.Frame(tab_parent)
+            tab_parent.add(tab, text=self.razdels_tabs[idx])
+
+            # canvas1.config(yscrollcommand=scroll.set, scrollregion=(0, 0, 100, 1000))
+
+            row_tab = 0
+            for id_labels, label_idx in enumerate(self.labels):
+                if str(label_idx).startswith(str(idx+1)):
+                    tk.Label(tab, text=label_idx, justify=LEFT, wraplength=400).grid(row=row_tab, column=0, padx=0, pady=5, sticky=W)
+
+                    temp_key = str(label_idx.split()[0][:-1])
+
+                    vars_string[id_labels] = StringVar()
+
+                    tk.Entry(tab, justify=LEFT, textvariable=vars_string[id_labels]).grid(row=row_tab, column=1, padx=0, pady=5, sticky=W)
+
+                    row_tab += 1
+
+            loginButton = Button(tab, text="Вход", command=make_input_dict, width=30).grid(row=row_tab, column=0)
+        tab_parent.pack(expand=1, anchor="nw")
+        self.create_window.mainloop()
+
+
+if __name__ == '__main__':
+    test_cls = AddRazrStr()
+
+
+
+# form = tk.Tk()
+# form.title("Tkinter Database Form")
+# form.geometry("600x450")
+#
+# tab_parent = ttk.Notebook(form)
+#
+# tab1 = ttk.Frame(tab_parent)
+# tab2 = ttk.Frame(tab_parent)
+#
+# tab_parent.add(tab1, text="All Records")
+# tab_parent.add(tab2, text="Add New Record")
+#
+# # === WIDGETS FOR TAB ONE
+# firstLabelTabOne = tk.Label(tab1, text="First Name:")
+# familyLabelTabOne = tk.Label(tab1, text="Family Name:")
+# jobLabelTabOne = tk.Label(tab1, text="Address:")
+#
+# firstEntryTabOne = tk.Entry(tab1)
+# familyEntryTabOne = tk.Entry(tab1)
+# jobEntryTabOne = tk.Entry(tab1)
+#
+# imgLabelTabOne = tk.Label(tab1)
+#
+# buttonForward = tk.Button(tab1, text="Forward")
+# buttonBack = tk.Button(tab1, text="Back")
+#
+# # === ADD WIDGETS TO GRID ON TAB ONE
+# firstLabelTabOne.grid(row=0, column=0, padx=15, pady=15)
+# firstEntryTabOne.grid(row=0, column=1, padx=15, pady=15)
+#
+# familyLabelTabOne.grid(row=1, column=0, padx=15, pady=15)
+# familyEntryTabOne.grid(row=1, column=1, padx=15, pady=15)
+#
+# jobLabelTabOne.grid(row=2, column=0, padx=15, pady=15)
+# jobEntryTabOne.grid(row=2, column=1, padx=15, pady=15)
+#
+# imgLabelTabOne.grid(row=0, column=2, rowspan=3, padx=15, pady=15)
+#
+# buttonBack.grid(row=3, column=0, padx=15, pady=15)
+# buttonForward.grid(row=3, column=2, padx=15, pady=15)
+#
+# # === WIDGETS FOR TAB TWO
+# firstLabelTabTwo = tk.Label(tab2, text="secont Name:")
+# familyLabelTabTwo = tk.Label(tab2, text="Family Name:")
+# jobLabelTabTwo = tk.Label(tab2, text="Address:")
+#
+# firstEntryTabTwo = tk.Entry(tab2)
+# familyEntryTabTwo = tk.Entry(tab2)
+# jobEntryTabTwo = tk.Entry(tab2)
+#
+# imgLabelTabTwo = tk.Label(tab2)
+#
+# buttonCommit = tk.Button(tab2, text="Avfdvfdvfdabase")
+# buttonAddImage = tk.Button(tab2, text="Add Image")
+#
+# # === ADD WIDGETS TO GRID ON TAB TWO
+# firstLabelTabTwo.grid(row=0, column=0, padx=15, pady=15)
+# firstEntryTabTwo.grid(row=0, column=1, padx=15, pady=15)
+# imgLabelTabTwo.grid(row=0, column=2, rowspan=3, padx=15, pady=15)
+#
+# familyLabelTabTwo.grid(row=1, column=0, padx=15, pady=15)
+# familyEntryTabTwo.grid(row=1, column=1, padx=15, pady=15)
+#
+# jobLabelTabTwo.grid(row=2, column=0, padx=15, pady=15)
+# jobEntryTabTwo.grid(row=2, column=1, padx=15, pady=15)
+#
+# buttonCommit.grid(row=4, column=1, padx=15, pady=15)
+# buttonAddImage.grid(row=4, column=2, padx=15, pady=15)
+#
+# tab_parent.pack(expand=1, fill='both')
+#
+# form.mainloop()
